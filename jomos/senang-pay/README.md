@@ -54,6 +54,8 @@ Step 4: In Your controller add this to your ordering processing method.
 
 Example: After customer click checkout or pay, the form should submit via post to a controller method
 
+```php
+
 use Jomos/SenangPay/Senangpay;
 
 class PaymentController extends Controller {
@@ -78,21 +80,21 @@ class PaymentController extends Controller {
     
         if(Senangpay::checkIfReturnHashCorrect( $request ) == true)
         {
-		    $order = Order::find($request->order_id);
+		        $order = Order::find($request->order_id);
 
-		    if( $request->status_id == 1 )
-		    {
-			    $order->payment_status = 'Paid';
-                $order->senangpay_transaction_id = $request->transaction_id;
-                $order->confirm_payment_date = date('Y-m-d');
-                $order->save();
-			    return redirect()->to('success');
+            if( $request->status_id == 1 )
+            {
+              $order->payment_status = 'Paid';
+                    $order->senangpay_transaction_id = $request->transaction_id;
+                    $order->confirm_payment_date = date('Y-m-d');
+                    $order->save();
+              return redirect()->to('success');
 
-		    } else {
+            } else {
 
-			    return redirect()->to('fail');
+              return redirect()->to('fail');
 
-		    }
+            }
 
         }
 
@@ -101,10 +103,15 @@ class PaymentController extends Controller {
 
 }
 
+```
+
 Step 5: In routes/web.php add these 2 routes:
 
+```php
     Route::post('process-order', 'PaymentController@processOrder');
     Route::get('process-return-url', 'PaymentController@processReturnUrl');
+
+```
 
 ## Security
 
